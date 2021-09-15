@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -14,15 +14,17 @@ class GalleryImageViewWrapper extends StatefulWidget {
   final List<GalleryItemModel> galleryItems;
   final Axis scrollDirection;
   final String? titleGallery;
+  final bool showAppBar;
 
-  GalleryImageViewWrapper({
-    this.loadingBuilder,
-    this.titleGallery,
-    this.backgroundDecoration,
-    this.initialIndex,
-    required this.galleryItems,
-    this.scrollDirection = Axis.horizontal,
-  }) : pageController = PageController(initialPage: initialIndex ?? 0);
+  GalleryImageViewWrapper(
+      {this.loadingBuilder,
+      this.titleGallery,
+      this.backgroundDecoration,
+      this.initialIndex,
+      required this.galleryItems,
+      this.scrollDirection = Axis.horizontal,
+      this.showAppBar = true})
+      : pageController = PageController(initialPage: initialIndex ?? 0);
 
   @override
   State<StatefulWidget> createState() {
@@ -31,14 +33,16 @@ class GalleryImageViewWrapper extends StatefulWidget {
 }
 
 class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
-  final minScale = PhotoViewComputedScale.contained * 0.8;
+  final minScale = PhotoViewComputedScale.contained * 1;
   final maxScale = PhotoViewComputedScale.covered * 8;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.titleGallery ?? "Galley"),
-      ),
+      appBar: widget.showAppBar == true
+          ? AppBar(
+              title: Text(widget.titleGallery ?? "Galley"),
+            )
+          : null,
       body: Container(
         decoration: widget.backgroundDecoration,
         constraints: BoxConstraints.expand(
